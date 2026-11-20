@@ -57,14 +57,18 @@
 # 1. dplyr: For data manipulation (filtering, grouping, summarizing)
 #    - Install: install.packages("dplyr")
 #    - Why: Makes data transformation cleaner and more readable
+
 #
 # OPTIONAL (but recommended) PACKAGES:
 # -------------------------------------
 # 2. tidyr: For reshaping data (optional for this project)
 #    - Install: install.packages("tidyr")
 #
+library(tidyr)
+
 # 3. readr: For faster data reading (optional alternative to read.table)
 #    - Install: install.packages("readr")
+library(readr)
 #
 # NOTE: You only need to install packages ONCE using install.packages()
 #       But you must load them with library() in EVERY new R session
@@ -72,7 +76,7 @@
 # TODO: Load the dplyr package
 # HINT: Use library(dplyr)
 
-library(_____)
+library(dplyr)
 
 # INTERACTIVE CHECK #1
 # Run this command to verify dplyr loaded correctly:
@@ -89,21 +93,24 @@ library(_____)
 # EXAMPLE for Windows: setwd("C:/Users/YourName/Desktop/DAT511/GroupProject")
 # EXAMPLE for Mac: setwd("/Users/YourName/Desktop/DAT511/GroupProject")
 
-setwd("_____")
+setwd("/Users/taylorevans/Desktop/DAT413GroupProject/Taylor and Ava GP")
 
 # INTERACTIVE CHECK #2
 # Verify your working directory is correct:
 # getwd()  # Should show the path you just set
 # list.files()  # Should show "UCI HAR Dataset" folder
+getwd()
+list.files() 
 
 # TODO: Define the path to the UCI HAR Dataset folder
 # HINT: If the folder is directly in your working directory, just use the folder name
 
-data_path <- "_____"
+data_path <- "UCI HAR Dataset"
 
 # INTERACTIVE CHECK #3
 # Verify the dataset folder contains the expected files:
 # list.files(data_path)  # Should show: activity_labels.txt, features.txt, train, test
+list.files(data_path)
 
 # ============================================================================
 # STEP 3: Load Metadata Files
@@ -124,8 +131,8 @@ data_path <- "_____"
 # HINT: Use read.table() with file.path() to construct the full path
 # HINT: Set col.names = c("activity_id", "activity")
 
-activity_labels <- read.table(file.path(_____, _____), 
-                              col.names = c(_____, _____))
+activity_labels <- read.table(file.path(data_path, "activity_labels.txt"), 
+                              col.names = c("activity_id", "activity"))
 
 # INTERACTIVE CHECK #4
 # View the activity labels:
@@ -153,14 +160,17 @@ activity_labels <- read.table(file.path(_____, _____),
 # TODO: Load features.txt
 # HINT: Set col.names = c("index", "feature_name")
 
-features <- read.table(file.path(_____, _____), 
-                       col.names = c(_____, _____))
+features <- read.table(file.path(data_path, "features.txt"), 
+                       col.names = c("index", "feature_name"))
 
 # INTERACTIVE CHECK #5
 # Explore the features:
 # dim(features)  # Should show: 561 rows × 2 columns
 # head(features, 10)  # View first 10 feature names
 # View(features)  # Open in RStudio viewer to see all features
+dim(features)
+head(features, 10)
+View(features)
 
 # ============================================================================
 # STEP 4: Extract Mean and Standard Deviation Features
@@ -184,18 +194,19 @@ features <- read.table(file.path(_____, _____),
 #   (mean|std) = either "mean" OR "std"
 #   \\(\\) = literal parentheses (escaped because () are special in regex)
 
-mean_std_features <- grep(_____, features$feature_name)
+mean_std_features <- grep("-(mean|std)\\(\\)", features$feature_name)
 
 # TODO: Extract the feature names at those indices
 # HINT: Use features$feature_name[mean_std_features]
 
-selected_features <- features$feature_name[_____]
+selected_features <- features$feature_name[mean_std_features]
 
 # INTERACTIVE CHECK #6
 # Verify the extraction:
 # length(mean_std_features)  # Should be 66 features
 # head(selected_features, 10)  # View first 10 selected feature names
 # All names should contain either "-mean()" or "-std()"
+list.files(data_path)
 
 # ============================================================================
 # STEP 5: Load and Process Training Data
