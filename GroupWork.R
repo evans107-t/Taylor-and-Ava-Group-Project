@@ -462,10 +462,19 @@ dim(test_data)
 #
 # Run these commands to verify:
 # dim(tidy_data)
+dim(tidy_data)
+
 # colnames(tidy_data)[1:5]
+colnames(tidy_data)[1:5]
+
 # table(tidy_data$subject)  # Each subject should appear 6 times
+table(tidy_data$subject)
+
 # table(tidy_data$activity)  # Each activity should appear 30 times
+table(tidy_data$activity)
+
 # summary(tidy_data[, 1:5])
+summary(tidy_data[, 1:5])
 
 # ============================================================================
 # REFLECTION QUESTIONS (Include answers in your README.md)
@@ -486,26 +495,4 @@ dim(test_data)
 #    What does a single value in one of the measurement columns represent?
 #
 # ============================================================================
-# NEXT STEPS FOR YOUR GROUP PROJECT
-# ============================================================================
-# Now that you have the code, you need to complete:
-#
-# 1. README.md: Explain how to run this script and what it does
-#    - How to download and extract the dataset
-#    - How to set the working directory
-#    - What each step of the script accomplishes
-#    - How to verify the results
-#
-# 2. CodeBook.md: Document the data and variables
-#    - Data source and description
-#    - Description of each variable (subject, activity, and features)
-#    - Transformations performed (merging, filtering, averaging)
-#    - Units of measurement
-#
-# 3. Push to GitHub:
-#    - GroupWork.R (this script)
-#    - README.md
-#    - CodeBook.md
-#    - tidy_dataset.txt (the output file)
-#
-# ============================================================================
+
