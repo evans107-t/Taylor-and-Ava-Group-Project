@@ -200,14 +200,13 @@ mean_std_features <- grep("-(mean|std)\\(\\)", features$feature_name)
 # HINT: Use features$feature_name[mean_std_features]
 
 selected_features <- features$feature_name[mean_std_features]
+selected_features
 
 # INTERACTIVE CHECK #6
-# Verify the extraction:
-# length(mean_std_features)  # Should be 66 features
-# head(selected_features, 10)  # View first 10 selected feature names
-# All names should contain either "-mean()" or "-std()"
-list.files(data_path)
 
+list.files(data_path)
+length(mean_std_features)
+head(selected_features)
 # ============================================================================
 # STEP 5: Load and Process Training Data
 # ============================================================================
@@ -228,43 +227,48 @@ list.files(data_path)
 # HINT: Use [, mean_std_features] after reading to select specific columns
 # EXPLANATION: [rows, columns] - leaving rows blank selects all rows
 
-X_train <- read.table(file.path(data_path, "train", "X_train.txt"))[, _____]
-
+X_train <- read.table(file.path(data_path, "train", "X_train.txt"))[, mean_std_features]
+X_train
 # TODO: Set descriptive column names for X_train
 # HINT: Use colnames(X_train) <- selected_features
 
-colnames(X_train) <- _____
+colnames(X_train) <- selected_features
 
 # INTERACTIVE CHECK #7
-# Verify X_train:
-# dim(X_train)  # Should be: 7352 rows × 66 columns
-# colnames(X_train)[1:5]  # View first 5 column names
+
+dim(X_train)
+
+colnames(X_train)[1:5]
+
 
 # LOADING y_train.txt (Activity Labels)
 # ----------------------------------------------------------------------------
 # TODO: Load y_train.txt with column name "activity_id"
 # HINT: Use col.names = "activity_id" parameter in read.table()
 
-y_train <- read.table(file.path(_____, _____, _____), 
-                      col.names = _____)
+y_train <- read.table(file.path(data_path, "train", "y_train.txt"), 
+                      col.names = "activity_id")
 
 # INTERACTIVE CHECK #8
 # Verify y_train:
-# dim(y_train)  # Should be: 7352 rows × 1 column
-# table(y_train$activity_id)  # Count how many of each activity (1-6)
+dim(y_train)
+table(y_train$activity_id)
+
 
 # LOADING subject_train.txt (Subject IDs)
 # ----------------------------------------------------------------------------
 # TODO: Load subject_train.txt with column name "subject"
 
-subject_train <- read.table(file.path(_____, _____, _____), 
-                            col.names = _____)
+subject_train <- read.table(file.path(data_path, "train", "subject_train.txt"), 
+                            col.names = "subject")
 
 # INTERACTIVE CHECK #9
 # Verify subject_train:
-# dim(subject_train)  # Should be: 7352 rows × 1 column
-# length(unique(subject_train$subject))  # Should show 21 unique subjects
-# table(subject_train$subject)  # Count observations per subject
+
+dim(subject_train)
+length(unique(subject_train$subject))
+table(subject_train$subject) # Count observations per subject
+
 
 # ============================================================================
 # STEP 6: Load and Process Test Data
@@ -276,28 +280,29 @@ subject_train <- read.table(file.path(_____, _____, _____),
 
 # TODO: Load X_test.txt and select only the mean/std columns
 
-X_test <- read.table(file.path(_____, _____, _____))[, _____]
+X_test <- read.table(file.path(data_path, "test", "X_test.txt"))[, mean_std_features]
 
 # TODO: Set column names for X_test
 
-colnames(X_test) <- _____
+colnames(X_test) <- selected_features 
 
 # TODO: Load y_test.txt with column name "activity_id"
 
-y_test <- read.table(file.path(_____, _____, _____), 
-                     col.names = _____)
+y_test <- read.table(file.path(data_path, "test", "y_test.txt"), 
+                     col.names = "activity_id")
 
 # TODO: Load subject_test.txt with column name "subject"
 
-subject_test <- read.table(file.path(_____, _____, _____), 
-                           col.names = _____)
+subject_test <- read.table(file.path(data_path, "test", "subject_test.txt"), 
+                           col.names = "subject")
 
 # INTERACTIVE CHECK #10
 # Verify test data:
-# dim(X_test)  # Should be: 2947 rows × 66 columns
-# dim(y_test)  # Should be: 2947 rows × 1 column
-# dim(subject_test)  # Should be: 2947 rows × 1 column
-# length(unique(subject_test$subject))  # Should show 9 unique subjects
+dim(X_test)
+dim(y_test)
+dim(subject_test)
+length(unique(subject_test$subject))
+
 
 # ============================================================================
 # STEP 7: Combine Training and Test Datasets
@@ -317,27 +322,25 @@ subject_test <- read.table(file.path(_____, _____, _____),
 #                                ↓
 #                        data_combined (10299 rows)
 
-# TODO: Use cbind() to combine subject_train, y_train, and X_train
-# HINT: cbind(dataframe1, dataframe2, dataframe3)
+
 # ORDER MATTERS: We want subject first, then activity, then measurements
 
-data_train <- cbind(_____, _____, _____)
+data_train <- cbind(subject_train, y_train, X_train)
 
-# TODO: Use cbind() to combine subject_test, y_test, and X_test
 
-data_test <- cbind(_____, _____, _____)
 
-# TODO: Use rbind() to stack data_train and data_test vertically
-# HINT: rbind(dataframe1, dataframe2)
+data_test <- cbind(subject_test, y_test, X_test)
 
-data_combined <- rbind(_____, _____)
+
+
+data_combined <- rbind(data_train, data_test)
 
 # INTERACTIVE CHECK #11
 # Verify the combined dataset:
-# dim(data_combined)  # Should be: 10299 rows × 68 columns
-#                     # (10299 = 7352 + 2947, 68 = subject + activity_id + 66 features)
-# colnames(data_combined)[1:5]  # Should show: "subject", "activity_id", then feature names
-# summary(data_combined[, 1:3])  # Summary of first 3 columns
+dim(data_combined)  
+                    
+colnames(data_combined)[1:5]  
+summary(data_combined[, 1:3])  
 
 # ============================================================================
 # STEP 8: Add Descriptive Activity Names
