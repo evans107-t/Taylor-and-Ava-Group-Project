@@ -360,18 +360,23 @@ summary(data_combined[, 1:3])
 #   - by = "activity_id" tells merge which column to match on
 #   - all.x = TRUE keeps all rows from data_combined even if no match
 
-data_combined <- merge(_____, _____, by = _____, all.x = TRUE)
+data_combined <- merge(data_combined, activity_labels, by = "activity_id", all.x = TRUE)
 
 # TODO: Remove the activity_id column (we only need descriptive names)
 # HINT: Set the column to NULL: data_combined$activity_id <- NULL
 
-data_combined$activity_id <- _____
+data_combined$activity_id <- NULL
 
 # INTERACTIVE CHECK #12
 # Verify the activity names:
 # colnames(data_combined)[1:3]  # Should show: "subject", "activity", then features
+colnames(data_combined)[1:3]
+
 # table(data_combined$activity)  # Count of each activity type
+table(data_combined$activity)
+
 # unique(data_combined$activity)  # Should show 6 activity names
+unique(data_combined$activity)
 
 # ============================================================================
 # STEP 9: Create Tidy Dataset with Averages
@@ -400,18 +405,24 @@ data_combined$activity_id <- _____
 # HINT: summarise() should use across(everything(), mean) to average all columns
 
 tidy_data <- data_combined %>%
-  group_by(_____, _____) %>%
-  summarise(across(_____, _____))
+  group_by(subject, activity) %>%
+  summarise(across(everything(), mean))
 
 # INTERACTIVE CHECK #13
 # Verify the tidy dataset:
 # dim(tidy_data)  # Should be: 180 rows × 68 columns
 #                 # (180 = 30 subjects × 6 activities)
+dim(tidy_data)
+
 # head(tidy_data)  # View first few rows
+head(tidy_data)
+
 # View(tidy_data)  # Open in RStudio viewer
+View(tidy_data)
 
 # Check if we have all subject-activity combinations:
 # nrow(unique(tidy_data[, c("subject", "activity")]))  # Should be 180
+nrow(unique(tidy_data[, c("subject", "activity")]))
 
 # ============================================================================
 # STEP 10: Save the Tidy Dataset
@@ -422,15 +433,20 @@ tidy_data <- data_combined %>%
 # HINT: write.table(data, "filename.txt", row.name = FALSE)
 # NOTE: It's row.name (singular), not row.names!
 
-write.table(_____, _____, row.name = FALSE)
+write.table(tidy_data, "tidy_dataset.txt", row.name = FALSE)
 
 # INTERACTIVE CHECK #14
 # Verify the file was saved:
 # list.files(pattern = "tidy_dataset.txt")  # Should show the file
 # 
+list.files(pattern = "tidy_dataset.txt")
+
 # To reload and verify:
 # test_data <- read.table("tidy_dataset.txt", header = TRUE)
 # dim(test_data)  # Should be: 180 rows × 68 columns
+test_data <- read.table("tidy_dataset.txt", header = TRUE)
+
+dim(test_data)
 
 # ============================================================================
 # FINAL VERIFICATION CHECKLIST
